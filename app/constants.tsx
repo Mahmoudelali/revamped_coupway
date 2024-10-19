@@ -5,3 +5,7 @@ export enum BottomTabScreens {
 	BASKET = 'basket',
 	PROFILE = 'profile',
 }
+
+export interface responseModel {
+	prodName: string;
+}

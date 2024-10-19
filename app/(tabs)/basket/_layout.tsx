@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 const Layout = () => {
 	return (
-		<Stack>
+		<Stack screenOptions={{ headerShown: true }}>
 			<Stack.Screen name="basket" />
 		</Stack>
 	);

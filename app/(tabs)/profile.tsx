@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 const Profile = () => {
-	return <View></View>;
+	const commons = useAppSelector((state) => state.commons);
+	return <Text>{commons.value}</Text>;
 };
 
 const styles = StyleSheet.create({});
