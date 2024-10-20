@@ -5,6 +5,7 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomTabScreens } from '../constants';
+import { NetworkManager } from '../managers/NetworkManager';
 
 type TabBarIconProps = {
 	focused: boolean;
