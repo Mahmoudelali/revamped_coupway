@@ -16,3 +16,8 @@ export enum BottomTabScreens {
 export interface responseModel {
 	prodName: string;
 }
+
+export enum MainColors {
+	primary = '#ee6723',
+	titleBlack = '#353935',
+}

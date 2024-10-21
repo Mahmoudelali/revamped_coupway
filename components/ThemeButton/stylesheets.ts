@@ -1,8 +1,9 @@
+import { MainColors } from '@/app/helpers/constants';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	default: {
-		backgroundColor: '#ee6723',
+		backgroundColor: MainColors.primary,
 		display: 'flex',
 		alignItems: 'center',
 		paddingVertical: 16,

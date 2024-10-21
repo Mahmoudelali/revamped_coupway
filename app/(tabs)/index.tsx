@@ -10,6 +10,7 @@ import { LocalStorageAction } from '../helpers/constants';
 import { HelloWave } from '@/components/HelloWave';
 import LabelInput from '@/components/LabelInput/LabelInput';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
+import { SwitchButton } from '@/components/Switcher/Switcher';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
@@ -22,6 +23,7 @@ export default function HomeScreen() {
 	};
 	let isAuthenticated = commons.isLoggedIn;
 	const [text, setText] = useState<string>('');
+	const [selectedOption, setSelectedOption] = useState('Login');
 
 	useEffect(() => {
 		if (!mounted.current) mounted.current = true;
@@ -62,6 +64,11 @@ export default function HomeScreen() {
 				<HelloWave />
 			</ThemedView>
 
+			<SwitchButton
+				options={['Login', 'Register']}
+				selectedOption={selectedOption}
+				setSelectedOption={setSelectedOption}
+			/>
 			<LabelInput
 				placeholder="Error"
 				title="Header"
