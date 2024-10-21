@@ -11,6 +11,7 @@ import { HelloWave } from '@/components/HelloWave';
 import LabelInput from '@/components/LabelInput/LabelInput';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { SwitchButton } from '@/components/Switcher/Switcher';
+import Langs from '@/components/Langs/Langs';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
@@ -59,6 +60,7 @@ export default function HomeScreen() {
 				/>
 			}
 		>
+			<Langs str="test" />
 			<ThemedView style={styles.titleContainer}>
 				<ThemedText type="title">Welcome!</ThemedText>
 				<HelloWave />

@@ -2,12 +2,20 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { apiUrls } from '../config';
 import { NetworkManager } from '../managers/NetworkManager';
 
+enum Langs {
+	en = 'en',
+	ar = 'ar',
+}
 interface commonsSliceState {
-	isLoggedIn: false;
+	isLoggedIn: boolean;
 	token: string;
+	lang: Langs;
 }
 
-const initialState = {} as commonsSliceState;
+const initialState = {
+	lang: 'ar',
+	isLoggedIn: false,
+} as commonsSliceState;
 
 // Create the slice
 const commonsSlice = createSlice({
