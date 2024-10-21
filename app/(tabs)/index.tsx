@@ -9,6 +9,7 @@ import { localStorageAction } from '../helpers/helperFuncs';
 import { LocalStorageAction } from '../helpers/constants';
 import { HelloWave } from '@/components/HelloWave';
 import LabelInput from '@/components/LabelInput/LabelInput';
+import ThemeButton from '@/components/ThemeButton/ThemeButton';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
@@ -43,6 +44,9 @@ export default function HomeScreen() {
 		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
 	}, [commons.token]);
 
+	const handleClick = () => {
+		console.log('clicked');
+	};
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -53,10 +57,22 @@ export default function HomeScreen() {
 				/>
 			}
 		>
+			<ThemedView style={styles.titleContainer}>
+				<ThemedText type="title">Welcome!</ThemedText>
+				<HelloWave />
+			</ThemedView>
+
 			<LabelInput
 				placeholder="Error"
 				title="Header"
 				inputHandler={setText}
+			/>
+			<ThemeButton
+				title="Confirm"
+				disabled={false}
+				errorStr="Cannot proceed this request 🙁!"
+				clickHandler={handleClick}
+				error={true}
 			/>
 			<Pressable
 				onPress={() => {
@@ -67,10 +83,7 @@ export default function HomeScreen() {
 					{!isAuthenticated ? 'is Guest user' : 'is Logged in'}
 				</Text>
 			</Pressable>
-			<ThemedView style={styles.titleContainer}>
-				<ThemedText type="title">Welcome!</ThemedText>
-				<HelloWave />
-			</ThemedView>
+
 			<ThemedView style={styles.stepContainer}>
 				<ThemedText type="subtitle">Step 1: Try it</ThemedText>
 				<ThemedText>
