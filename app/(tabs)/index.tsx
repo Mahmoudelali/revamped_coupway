@@ -1,11 +1,48 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
+import { Image, StyleSheet, Platform, Pressable, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { login, LoginPayload, setIsLoggedIn } from '../slices/commons-slice';
+import { localStorageAction } from '../helpers/helperFuncs';
+import { LocalStorageAction } from '../helpers/constants';
+import { HelloWave } from '@/components/HelloWave';
+import LabelInput from '@/components/LabelInput/LabelInput';
 
 export default function HomeScreen() {
+	const commons = useAppSelector((state) => state.commons);
+	const dispatch = useAppDispatch();
+	let mounted = useRef(false);
+
+	let payload: LoginPayload = {
+		username: 'mahmoud',
+		password: '123',
+	};
+	let isAuthenticated = commons.isLoggedIn;
+	const [text, setText] = useState<string>('');
+
+	useEffect(() => {
+		if (!mounted.current) mounted.current = true;
+		if (!!commons.isLoggedIn) return;
+
+		localStorageAction(LocalStorageAction.GET, 'token').then((token) => {
+			if (!!token) {
+				console.log('🎉 Found token in local storage', token);
+				dispatch(setIsLoggedIn(!!token));
+				return;
+			}
+			console.log('Redirecting to Login');
+			dispatch(setIsLoggedIn(false));
+			dispatch(login(payload));
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!commons.token) return;
+		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
+	}, [commons.token]);
+
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -16,10 +53,24 @@ export default function HomeScreen() {
 				/>
 			}
 		>
-			{/* <ThemedView style={styles.titleContainer}>
+			<LabelInput
+				placeholder="Error"
+				title="Header"
+				inputHandler={setText}
+			/>
+			<Pressable
+				onPress={() => {
+					dispatch(login(payload));
+				}}
+			>
+				<Text>
+					{!isAuthenticated ? 'is Guest user' : 'is Logged in'}
+				</Text>
+			</Pressable>
+			<ThemedView style={styles.titleContainer}>
 				<ThemedText type="title">Welcome!</ThemedText>
 				<HelloWave />
-			</ThemedView> */}
+			</ThemedView>
 			<ThemedView style={styles.stepContainer}>
 				<ThemedText type="subtitle">Step 1: Try it</ThemedText>
 				<ThemedText>

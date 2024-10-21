@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const Basket = () => {
 	const commons = useAppSelector((state) => state.commons);
-	return <Text>{commons.test}</Text>;
+	return <Text>Basket</Text>;
 };
 
 const styles = StyleSheet.create({});

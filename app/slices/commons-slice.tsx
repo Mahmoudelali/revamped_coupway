@@ -1,30 +1,51 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { apiUrls } from '../config';
+import { NetworkManager } from '../managers/NetworkManager';
 
-// Define a type for the slice state
 interface commonsSliceState {
-	value: number;
-	test: string;
+	isLoggedIn: false;
+	token: string;
 }
 
-// Define the initial state using that type
-const initialState = {
-	value: 0,
-	test: 'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ',
-} as commonsSliceState;
+const initialState = {} as commonsSliceState;
 
 // Create the slice
 const commonsSlice = createSlice({
 	name: 'commons',
 	initialState,
 	reducers: {
-		setValue: (state, action: PayloadAction<number>) => {
-			state.value = action.payload;
+		setIsLoggedIn: (state, action) => {
+			state.isLoggedIn = action.payload;
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(login.fulfilled, (state, action) => {
+			let data = action.payload;
+			if (!data?.responseError && data?.responseData) {
+				state.token = data?.responseData.token;
+			}
+		});
 	},
 });
 
+export interface LoginPayload {
+	username: string;
+	password: string;
+}
+
+export const login = createAsyncThunk(
+	'/auth/token/login',
+	async (payload: LoginPayload) => {
+		let data = NetworkManager.getInstance()?.postRequest(
+			apiUrls.login,
+			payload,
+		);
+		return data;
+	},
+);
+
 // Export the actions
-export const { setValue } = commonsSlice.actions;
+export const { setIsLoggedIn } = commonsSlice.actions;
 
 // Export the reducer
 export default commonsSlice.reducer;

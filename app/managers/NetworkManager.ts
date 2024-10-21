@@ -15,7 +15,7 @@ export class NetworkManager {
 	}
 
 	private getBaseURL(): string {
-		return 'http://127.0.0.1:8000/';
+		return 'http://127.0.0.1:8000';
 	}
 
 	private parseGetParams(params: any) {
@@ -29,13 +29,13 @@ export class NetworkManager {
 		return '';
 	}
 
-	async getRequest(path: string, queries: any, headers: any) {
-		var url = this.getBaseURL() + this.parseGetParams(queries);
+	async getRequest(path: string, queries?: any, headers?: any) {
+		var url = this.getBaseURL() + this.parseGetParams(queries ?? {});
 		let response = await axios.get(url + path, headers);
 		return response.data;
 	}
 
-	async postRequest(path: string, payload: object, headers: object) {
+	async postRequest(path: string, payload?: object, headers?: object) {
 		var url = this.getBaseURL() + path;
 		let response = await axios.post(url, payload, headers);
 		if (response.status == 400) {

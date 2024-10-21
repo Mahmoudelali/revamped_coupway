@@ -1,8 +1,15 @@
+export enum LocalStorageAction {
+	SET,
+	GET,
+	UPDATE,
+	REMOVE,
+}
+
 export enum BottomTabScreens {
 	HOME = 'home',
 	SEARCH = 'search',
 	NOTIFICATIONS = 'notifications',
-	BASKET = 'basket',
+	BASKET = 'basketContainer',
 	PROFILE = 'profile',
 }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { BottomTabScreens } from '../constants';
+import { BottomTabScreens } from '../helpers/constants';
 import { NetworkManager } from '../managers/NetworkManager';
 
 type TabBarIconProps = {
