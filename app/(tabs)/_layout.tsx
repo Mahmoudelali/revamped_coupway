@@ -7,12 +7,6 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomTabScreens } from '../helpers/constants';
 import { NetworkManager } from '../managers/NetworkManager';
 
-type TabBarIconProps = {
-	focused: boolean;
-	color: string;
-	size: number;
-};
-
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
 

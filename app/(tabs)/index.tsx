@@ -12,6 +12,7 @@ import LabelInput from '@/components/LabelInput/LabelInput';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { SwitchButton } from '@/components/Switcher/Switcher';
 import Langs from '@/components/Langs/Langs';
+import { Redirect, router } from 'expo-router';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
@@ -27,29 +28,32 @@ export default function HomeScreen() {
 	const [selectedOption, setSelectedOption] = useState('Login');
 
 	useEffect(() => {
+		if (!commons.token) return;
+		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
+	}, [commons.token]);
+
+	useEffect(() => {
 		if (!mounted.current) mounted.current = true;
 		if (!!commons.isLoggedIn) return;
 
 		localStorageAction(LocalStorageAction.GET, 'token').then((token) => {
 			if (!!token) {
 				console.log('🎉 Found token in local storage', token);
-				dispatch(setIsLoggedIn(!!token));
+				// dispatch(setIsLoggedIn(!!token));
+				router.replace('/auth/');
 				return;
 			}
-			console.log('Redirecting to Login');
 			dispatch(setIsLoggedIn(false));
-			dispatch(login(payload));
 		});
 	}, []);
-
-	useEffect(() => {
-		if (!commons.token) return;
-		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
-	}, [commons.token]);
 
 	const handleClick = () => {
 		console.log('clicked');
 	};
+	if (!commons.isLoggedIn) {
+		return <Redirect href="/auth/" />;
+	}
+
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -60,7 +64,6 @@ export default function HomeScreen() {
 				/>
 			}
 		>
-			<Langs str="test" />
 			<ThemedView style={styles.titleContainer}>
 				<ThemedText type="title">Welcome!</ThemedText>
 				<HelloWave />

@@ -15,26 +15,24 @@ let langs: LangsType = {
 	ar: ar,
 };
 
-interface LangsProps {
-	str: string;
-	params?: { [key: string]: string };
-}
-
-export default function Langs(props: LangsProps) {
+export default function localize(
+	str: string,
+	params?: { [key: string]: string },
+) {
 	const lang = useAppSelector((state) => state.commons.lang);
-	let Lang = langs[lang];
-	let finalStr = props.str;
 
-	if (Lang && Lang[props.str]) {
-		finalStr = Lang[props.str];
+	let Lang = langs[lang];
+	let finalStr = str;
+
+	if (Lang && Lang[str]) {
+		finalStr = Lang[str];
 	}
 
-	if (props.params && Object.keys(props.params).length) {
-		for (const key in props.params) {
+	if (params && Object.keys(params).length) {
+		for (const key in params) {
 			let regex = new RegExp('%' + key + '%', 'g');
-			finalStr = finalStr.replace(regex, props.params[key]);
+			finalStr = finalStr.replace(regex, params[key]);
 		}
 	}
-	console.log(lang, Lang);
-	return <Text>{finalStr}</Text>;
+	return finalStr;
 }

@@ -1,3 +1,7 @@
  { 
-    "test" :  "tajrubba in english"
- }
+    "test" :  "tajrubba in english" ,
+    "login" :  "LOGIN",
+    "enter_username" :  "Enter your username",
+    "enter_password" :  "Enter your password" ,
+    "greetings": "Welcome back!"
+    }

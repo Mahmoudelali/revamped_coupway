@@ -20,4 +20,6 @@ export interface responseModel {
 export enum MainColors {
 	primary = '#ee6723',
 	titleBlack = '#353935',
+	lightGray = '#edeced',
+	textColor = '#554d56',
 }

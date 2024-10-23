@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import styles from './stylesheets';
+import Langs from '../Langs/Langs';
 
 interface ThemeButtonProps {
 	title: string;
@@ -26,7 +27,7 @@ const ThemeButton = (props: ThemeButtonProps) => {
 				onPress={handlePress}
 				style={[styles.default, props.disabled && styles.disabled]}
 			>
-				<Text style={[styles.title]}>{props.title}</Text>
+				<Text style={[styles.title]}> {props.title}</Text>
 			</Pressable>
 			<Text style={styles.errorLabel}> {handleRenderError()} </Text>
 		</View>

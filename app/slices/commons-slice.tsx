@@ -13,7 +13,7 @@ interface commonsSliceState {
 }
 
 const initialState = {
-	lang: 'ar',
+	lang: 'en',
 	isLoggedIn: false,
 } as commonsSliceState;
 

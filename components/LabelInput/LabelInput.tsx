@@ -1,14 +1,7 @@
 import { useState } from 'react';
-import {
-	View,
-	Text,
-	TextInput,
-	StyleSheet,
-	NativeSyntheticEvent,
-	TextInputTextInputEventData,
-	TextInputProps,
-} from 'react-native';
+import { View, Text, TextInput, TextInputProps } from 'react-native';
 import styles from './stylesheets';
+import { Ionicons } from '@expo/vector-icons';
 // import { colors, fonts } from '../css';
 // import inputStyles from './stylesheets';
 
@@ -23,6 +16,7 @@ interface LabelInputProps {
 	secureTextEntry?: boolean;
 	borderStyle?: string;
 	editable?: boolean;
+	iconName?: keyof typeof Ionicons.glyphMap;
 }
 
 const LabelInput = (props: LabelInputProps) => {
@@ -35,12 +29,24 @@ const LabelInput = (props: LabelInputProps) => {
 	const handleFocus = () => {};
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<Text style={styles.header}>{props.title}</Text>
 			<Text>{props.errLabel}</Text>
 			<View>
+				{!!props.iconName && (
+					<Ionicons
+						name={props.iconName}
+						size={20}
+						style={styles.icon}
+					/>
+				)}
+
 				<TextInput
-					style={[styles.input, styles.inputError]}
+					inlineImageLeft="test"
+					style={[
+						styles.input,
+						!!props.errLabel && styles.inputError,
+					]}
 					placeholder={props.placeholder}
 					onChangeText={handleChangeText}
 					onFocus={handleFocus}
