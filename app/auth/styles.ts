@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { MainColors } from '../helpers/constants';
 
 export default StyleSheet.create({
+	tintColor: { color: MainColors.primary },
 	svContainer: {
 		flex: 1,
 		justifyContent: 'center',
@@ -30,4 +31,19 @@ export default StyleSheet.create({
 		lineHeight: 34,
 		marginVertical: 20,
 	},
+	loginNow: { color: MainColors.primary },
+	textCenter: { textAlign: 'center' },
+
+	orContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 5,
+	},
+	orSeparator: {
+		backgroundColor: MainColors.lightGray,
+		width: 20,
+		height: 1,
+	},
+	marginTop: { marginTop: 10 },
 });

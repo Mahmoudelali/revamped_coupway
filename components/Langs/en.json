@@ -1,7 +1,14 @@
  { 
-    "test" :  "tajrubba in english" ,
-    "login" :  "LOGIN",
-    "enter_username" :  "Enter your username",
-    "enter_password" :  "Enter your password" ,
-    "greetings": "Welcome back!"
-    }
+   "test" :  "tajrubba in english" ,
+   "login" :  "LOGIN",
+   "create_account" : "Create account" ,
+   "enter_username" :  "Enter your username",
+   "enter_password" :  "Enter your password" ,
+   "confirm_password" : "Confirm your password",
+   "greetings": "Welcome back!" ,
+   "register_now" : "Register now", 
+   "ques_no_account" : "Dont you have an account?",
+   "already_have_account" : "Already have an account?",
+   "continue_as_guest" : "Continue as guest",
+   "or" : "OR"
+}
