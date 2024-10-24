@@ -1,7 +1,16 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TextInputProps } from 'react-native';
+import {
+	View,
+	Text,
+	TextInput,
+	TextInputProps,
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+} from 'react-native';
 import styles from './stylesheets';
 import { Ionicons } from '@expo/vector-icons';
+
 // import { colors, fonts } from '../css';
 // import inputStyles from './stylesheets';
 
@@ -29,9 +38,10 @@ const LabelInput = (props: LabelInputProps) => {
 	const handleFocus = () => {};
 
 	return (
-		<View style={styles.container}>
+		<ScrollView contentContainerStyle={styles.container}>
 			<Text style={styles.header}>{props.title}</Text>
 			<Text>{props.errLabel}</Text>
+
 			<View>
 				{!!props.iconName && (
 					<Ionicons
@@ -52,7 +62,7 @@ const LabelInput = (props: LabelInputProps) => {
 					onFocus={handleFocus}
 				/>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 
