@@ -6,7 +6,6 @@ import Langs from '../Langs/Langs';
 interface ThemeButtonProps {
 	title: string;
 	clickHandler?: Function;
-	error?: boolean;
 	errorStr?: string;
 	disabled?: boolean;
 }
@@ -17,7 +16,7 @@ const ThemeButton = (props: ThemeButtonProps) => {
 	};
 
 	const handleRenderError = () => {
-		if (props.error && props.errorStr) {
+		if (!!props.errorStr) {
 			return <Text> {props.errorStr} </Text>;
 		}
 	};

@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
+import { StatusCodes } from '../helpers/constants';
 
 export class NetworkManager {
 	private static instance?: NetworkManager;
@@ -31,16 +32,40 @@ export class NetworkManager {
 
 	async getRequest(path: string, queries?: any, headers?: any) {
 		var url = this.getBaseURL() + this.parseGetParams(queries ?? {});
-		let response = await axios.get(url + path, headers);
+		let response = await axios.get(url + path, { headers });
 		return response.data;
 	}
 
 	async postRequest(path: string, payload?: object, headers?: object) {
-		var url = this.getBaseURL() + path;
-		let response = await axios.post(url, payload, headers);
-		if (response.status == 400) {
-			return { responseError: response.data, responseData: null };
+		try {
+			const url = this.getBaseURL() + path;
+			const response = await axios.post(url, payload, { headers });
+
+			if (response.status === StatusCodes.OK) {
+				return {
+					responseError: null,
+					responseData: response.data,
+					status: response.status,
+				};
+			} else {
+				return {
+					responseError: `Unexpected status: ${response.status}`,
+					responseData: null,
+					status: response.status,
+				};
+			}
+		} catch (error: AxiosError | any) {
+			if (axios.isAxiosError(error)) {
+				return {
+					status: error.response?.status || null,
+					errorCode: error.code,
+				};
+			} else {
+				return {
+					status: null,
+					error: error.message || 'Unknown error occurred',
+				};
+			}
 		}
-		return { responseError: null, responseData: response.data };
 	}
 }

@@ -11,7 +11,6 @@ import { HelloWave } from '@/components/HelloWave';
 import LabelInput from '@/components/LabelInput/LabelInput';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import { SwitchButton } from '@/components/Switcher/Switcher';
-import Langs from '@/components/Langs/Langs';
 import { Redirect, router } from 'expo-router';
 
 export default function HomeScreen() {
@@ -84,7 +83,6 @@ export default function HomeScreen() {
 				disabled={false}
 				errorStr="Cannot proceed this request 🙁!"
 				clickHandler={handleClick}
-				error={true}
 			/>
 			<Pressable
 				onPress={() => {

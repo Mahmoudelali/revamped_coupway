@@ -10,5 +10,10 @@
    "ques_no_account" : "Dont you have an account?",
    "already_have_account" : "Already have an account?",
    "continue_as_guest" : "Continue as guest",
-   "or" : "OR"
+   "or" : "OR" ,
+   "username_required"  : "Username cannot be empty!",
+   "password_required"  : "password cannot be empty!",
+   "invalid_email" : "Entered email is not valid",
+   "wrong_credenatils" : "Wrong username or password,please try again!",
+   "internal_server_error" : "Internal server error!"
 }

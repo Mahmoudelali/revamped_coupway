@@ -6,7 +6,7 @@ export default StyleSheet.create({
 		marginBottom: 6,
 	},
 	header: {
-		color: '#554d56',
+		color: MainColors.textColor,
 		fontWeight: 700,
 		paddingLeft: 8,
 		letterSpacing: 0.5,
@@ -37,5 +37,13 @@ export default StyleSheet.create({
 		top: 10,
 		left: 10,
 		zIndex: 10,
+	},
+
+	errorLabel: {
+		color: MainColors.textError,
+		fontSize: 12,
+		marginStart: 5,
+		marginTop: 4,
+		fontWeight: 400,
 	},
 });

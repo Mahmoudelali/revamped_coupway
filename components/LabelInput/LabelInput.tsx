@@ -20,7 +20,6 @@ interface LabelInputProps {
 	errLabel?: string;
 	labelText?: string;
 	keyboardType?: string;
-	// extraComponent;
 	inputHandler?: Function;
 	secureTextEntry?: boolean;
 	borderStyle?: string;
@@ -38,9 +37,8 @@ const LabelInput = (props: LabelInputProps) => {
 	const handleFocus = () => {};
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
+		<View style={styles.container}>
 			<Text style={styles.header}>{props.title}</Text>
-			<Text>{props.errLabel}</Text>
 
 			<View>
 				{!!props.iconName && (
@@ -62,7 +60,8 @@ const LabelInput = (props: LabelInputProps) => {
 					onFocus={handleFocus}
 				/>
 			</View>
-		</ScrollView>
+			<Text style={styles.errorLabel}>{props.errLabel}</Text>
+		</View>
 	);
 };
 
