@@ -17,7 +17,7 @@ const ThemeButton = (props: ThemeButtonProps) => {
 
 	const handleRenderError = () => {
 		if (!!props.errorStr) {
-			return <Text> {props.errorStr} </Text>;
+			return props.errorStr;
 		}
 	};
 	return (

@@ -1,60 +1,118 @@
-import { Image, StyleSheet, Platform, Pressable, Text } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import {
+	Image,
+	StyleSheet,
+	Platform,
+	Text,
+	View,
+	ScrollView,
+} from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { login, LoginPayload, setIsLoggedIn } from '../slices/commons-slice';
+import { resetToken, setIsLoggedIn } from '../slices/commons-slice';
 import { localStorageAction } from '../helpers/helperFuncs';
-import { LocalStorageAction } from '../helpers/constants';
-import { HelloWave } from '@/components/HelloWave';
-import LabelInput from '@/components/LabelInput/LabelInput';
-import ThemeButton from '@/components/ThemeButton/ThemeButton';
-import { SwitchButton } from '@/components/Switcher/Switcher';
-import { Redirect, router } from 'expo-router';
+import {
+	FontWeights,
+	LocalStorageAction,
+	MainColors,
+} from '../helpers/constants';
+
+import { router } from 'expo-router';
+import ImageWithLayer from '@/components/imageWithLayer';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
 	const dispatch = useAppDispatch();
 	let mounted = useRef(false);
 
-	let payload: LoginPayload = {
-		username: 'mahmoud',
-		password: '123',
-	};
-	let isAuthenticated = commons.isLoggedIn;
-	const [text, setText] = useState<string>('');
-	const [selectedOption, setSelectedOption] = useState('Login');
-
 	useEffect(() => {
 		if (!commons.token) return;
 		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
-	}, [commons.token]);
+		console.log('saving auth in Storage');
+	}, [commons.isLoggedIn]);
 
 	useEffect(() => {
 		if (!mounted.current) mounted.current = true;
-		if (!!commons.isLoggedIn) return;
 
 		localStorageAction(LocalStorageAction.GET, 'token').then((token) => {
 			if (!!token) {
 				console.log('🎉 Found token in local storage', token);
-				// dispatch(setIsLoggedIn(!!token));
-				router.replace('/auth/');
+				dispatch(setIsLoggedIn(!!token));
+				router.replace('/(tabs)/');
 				return;
 			}
+			console.log('user is not authenticated');
 			dispatch(setIsLoggedIn(false));
 		});
-	}, []);
+	}, [commons.isLoggedIn]);
 
-	const handleClick = () => {
-		console.log('clicked');
+	const handleClick = async () => {
+		localStorageAction(LocalStorageAction.REMOVE, 'token').then((res) => {
+			if (res == 'done') dispatch(resetToken());
+		});
 	};
-	if (!commons.isLoggedIn) {
-		return <Redirect href="/auth/" />;
-	}
 
 	return (
-		<ParallaxScrollView
+		<ImageWithLayer
+			image="https://t3.ftcdn.net/jpg/02/43/87/74/360_F_243877435_Jst4Q167p0PXboARcGNq5KXCmSelazFj.jpg"
+			containerStyles={styles.bannerContainer}
+		>
+			<View style={styles.layerText}>
+				<View style={styles.subtitleContainer}>
+					<Ionicons
+						style={styles.location}
+						name="location"
+						size={24}
+					/>
+					<Text style={styles.location}> San Francisco, CA</Text>
+				</View>
+
+				<Text style={styles.highlight}>
+					Good afternoon. Take a break from work.
+				</Text>
+			</View>
+		</ImageWithLayer>
+	);
+}
+
+const styles = StyleSheet.create({
+	bannerContainer: {
+		height: 280,
+		top: -10,
+	},
+	bannerImage: {
+		objectFit: 'contain',
+		maxWidth: '100%',
+		height: '100%',
+	},
+	layerText: {
+		bottom: 24,
+		left: 16,
+		position: 'absolute',
+	},
+	highlight: {
+		color: MainColors.white,
+		fontWeight: FontWeights.Bold,
+		fontSize: 28,
+		lineHeight: 34,
+		letterSpacing: 1,
+	},
+	location: {
+		color: MainColors.white,
+		fontWeight: FontWeights.Semi,
+		fontSize: 15,
+		lineHeight: 34,
+		letterSpacing: 1,
+	},
+	subtitleContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+});
+
+{
+	/* <ParallaxScrollView
 			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
 			headerImage={
 				<Image
@@ -62,97 +120,5 @@ export default function HomeScreen() {
 					style={styles.reactLogo}
 				/>
 			}
-		>
-			<ThemedView style={styles.titleContainer}>
-				<ThemedText type="title">Welcome!</ThemedText>
-				<HelloWave />
-			</ThemedView>
-
-			<SwitchButton
-				options={['Login', 'Register']}
-				selectedOption={selectedOption}
-				setSelectedOption={setSelectedOption}
-			/>
-			<LabelInput
-				placeholder="Error"
-				title="Header"
-				inputHandler={setText}
-			/>
-			<ThemeButton
-				title="Confirm"
-				disabled={false}
-				errorStr="Cannot proceed this request 🙁!"
-				clickHandler={handleClick}
-			/>
-			<Pressable
-				onPress={() => {
-					dispatch(login(payload));
-				}}
-			>
-				<Text>
-					{!isAuthenticated ? 'is Guest user' : 'is Logged in'}
-				</Text>
-			</Pressable>
-
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">Step 1: Try it</ThemedText>
-				<ThemedText>
-					Edit{' '}
-					<ThemedText type="defaultSemiBold">
-						app/(tabs)/index.tsx
-					</ThemedText>{' '}
-					to see changes. Press{' '}
-					<ThemedText type="defaultSemiBold">
-						{Platform.select({
-							ios: 'cmd + d',
-							android: 'cmd + m',
-						})}
-					</ThemedText>{' '}
-					to open developer tools.
-				</ThemedText>
-			</ThemedView>
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">Step 2: Explore</ThemedText>
-				<ThemedText>
-					Tap the Explore tab to learn more about what's included in
-					this starter app.
-				</ThemedText>
-			</ThemedView>
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">
-					Step 3: Get a fresh start
-				</ThemedText>
-				<ThemedText>
-					When you're ready, run{' '}
-					<ThemedText type="defaultSemiBold">
-						npm run reset-project
-					</ThemedText>{' '}
-					to get a fresh{' '}
-					<ThemedText type="defaultSemiBold">app</ThemedText>{' '}
-					directory. This will move the current{' '}
-					<ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-					<ThemedText type="defaultSemiBold">app-example</ThemedText>.
-				</ThemedText>
-			</ThemedView>
-		</ParallaxScrollView>
-	);
+		></ParallaxScrollView> */
 }
-
-const styles = StyleSheet.create({
-	titleContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 8,
-	},
-	stepContainer: {
-		gap: 8,
-		marginBottom: 8,
-	},
-	reactLogo: {
-		height: 178,
-		width: 290,
-		bottom: 0,
-		left: 0,
-		position: 'absolute',
-	},
-});

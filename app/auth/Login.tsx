@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, router } from 'expo-router';
-import { FormErrors, StatusCodes } from '../helpers/constants';
+import {
+	FormErrors,
+	LocalStorageAction,
+	StatusCodes,
+} from '../helpers/constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { getFormError, login, setFormError } from '../slices/commons-slice';
+import { login, setFormError, setIsLoggedIn } from '../slices/commons-slice';
 import { View, Text, ScrollView, Image } from 'react-native';
 import ThemeButton from '@/components/ThemeButton/ThemeButton';
 import LabelInput from '@/components/LabelInput/LabelInput';
 import styles from './styles';
 import localize from '@/components/Langs/Langs';
+import { localStorageAction } from '../helpers/helperFuncs';
 
 const renderGreetings = () => {
 	return <Text style={styles.greetings}>{localize('greetings')}</Text>;
@@ -53,13 +58,44 @@ const renderContinueAsGuest = () => {
 const Login = () => {
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	// const [error, setError] = useState<string>('');
+	const mounted = useRef(false);
+	console.log(isLoading);
 
 	const dispatch = useAppDispatch();
 	const commons = useAppSelector((state) => state.commons);
 
+	const getFormError = (): string => {
+		return commons.formError;
+	};
+
+	useEffect(() => {
+		if (!commons.token) return;
+
+		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
+		console.log('saving auth in Storage');
+	}, [commons.isLoggedIn]);
+
+	useEffect(() => {
+		if (!mounted.current) mounted.current = true;
+
+		localStorageAction(LocalStorageAction.GET, 'token').then((token) => {
+			if (!!token) {
+				console.log('🎉 Found token in local storage', token);
+				dispatch(setIsLoggedIn(!!token));
+				router.replace('/(tabs)/');
+				return;
+			}
+			console.log('user is not authenticated');
+			dispatch(setIsLoggedIn(false));
+			// router.replace('/auth/');
+		});
+	}, [commons.isLoggedIn]);
+
 	const handleLogin = async () => {
+		setIsLoading(true);
+
 		if (username == '') {
 			dispatch(setFormError(FormErrors.USERNAME_REQUIRED));
 			return;
@@ -70,16 +106,17 @@ const Login = () => {
 		}
 
 		let payload = { username: username.toLocaleLowerCase(), password };
-		await dispatch(login(payload));
+
+		dispatch(login(payload));
+
+		setIsLoading(false);
 		checkForTokenAndRedirectOrSetError();
 	};
+
 	const checkForTokenAndRedirectOrSetError = () => {
-		setIsLoading(false);
-		if (!!commons.token) {
-			router.replace('/(tabs)/basketContainer/basket');
-			return;
-		}
 		dispatch(setFormError(FormErrors.none));
+
+		setIsLoggedIn(true);
 	};
 	const handleUsernameFieldError = (): string => {
 		return getFormError() == FormErrors.USERNAME_REQUIRED

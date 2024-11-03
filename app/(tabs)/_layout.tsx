@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/app/helpers/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomTabScreens } from '../helpers/constants';
 import { NetworkManager } from '../managers/NetworkManager';

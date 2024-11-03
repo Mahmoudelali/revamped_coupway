@@ -1,4 +1,5 @@
  { 
+  "loading" : "loading",
    "test" :  "tajrubba in english" ,
    "login" :  "LOGIN",
    "create_account" : "Create account" ,

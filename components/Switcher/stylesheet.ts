@@ -1,5 +1,5 @@
 import { MainColors } from '@/app/helpers/constants';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	switchButton: {

@@ -1,3 +1,5 @@
+import { AnimatableNumericValue } from 'react-native';
+
 export enum LocalStorageAction {
 	SET,
 	GET,
@@ -23,6 +25,27 @@ export class MainColors {
 	static lightGray = '#edeced';
 	static textColor = '#554d56';
 	static textError = '#DC4C64';
+	static white = '#fafafa';
+	static black = '#000000';
+
+	static colorWithOpacity(
+		hexColor: string,
+		opacity: AnimatableNumericValue,
+	): string {
+		console.log(hexColor + String(opacity));
+		return hexColor + String(opacity);
+	}
+
+	static colorize(): string {
+		return '';
+	}
+}
+
+export enum FontWeights {
+	Normal = '400',
+	Medium = '500',
+	Semi = '600',
+	Bold = '800',
 }
 
 export enum FormErrors {

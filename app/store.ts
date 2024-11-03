@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import commonsSlice from '@/app/slices/commons-slice';
+import searchSlice from '@/app/slices/search-slice';
 
 // Create the Redux store and add the slice reducer
 const store = configureStore({
 	reducer: {
 		commons: commonsSlice,
+		search: searchSlice,
 	},
 });
 

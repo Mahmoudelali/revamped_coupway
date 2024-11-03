@@ -41,3 +41,15 @@ export async function localStorageAction(
 		return Promise.reject(error);
 	}
 }
+
+export const getImageSource = (URI: string) => {
+	if (URI.startsWith('http', 0)) {
+		return {
+			uri: URI,
+		};
+	}
+};
+
+export function LogJSON(data: any) {
+	return console.log(JSON.stringify(data, undefined, 2));
+}

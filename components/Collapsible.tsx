@@ -9,7 +9,7 @@ import {
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/app/helpers/Colors';
 
 export function Collapsible({
 	children,
