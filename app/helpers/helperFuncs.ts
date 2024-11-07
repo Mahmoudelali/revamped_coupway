@@ -43,6 +43,7 @@ export async function localStorageAction(
 }
 
 export const getImageSource = (URI: string) => {
+	if (!URI) return;
 	if (URI.startsWith('http', 0)) {
 		return {
 			uri: URI,
@@ -53,3 +54,20 @@ export const getImageSource = (URI: string) => {
 export function LogJSON(data: any) {
 	return console.log(JSON.stringify(data, undefined, 2));
 }
+
+export function colorize(): string {
+	const hexColor = Math.floor(Math.random() * 16777215).toString(16);
+	return `#${hexColor.padStart(6, '0')}`;
+}
+
+// {
+/* <ParallaxScrollView
+			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+			headerImage={
+				<Image
+					source={require('@/assets/images/partial-react-logo.png')}
+					style={styles.reactLogo}
+				/>
+			}
+		></ParallaxScrollView> */
+// }

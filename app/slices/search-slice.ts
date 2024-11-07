@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { NetworkManager } from '../managers/NetworkManager';
 import { apiUrls } from '../config';
-import { LogJSON } from '../helpers/helperFuncs';
 import { Offer } from './Models';
 
 // Define a type for the slice state

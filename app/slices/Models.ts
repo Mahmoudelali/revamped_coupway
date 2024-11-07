@@ -17,8 +17,14 @@ export interface Offer {
 	location: Location;
 	category: Category;
 	subcategories: Subcategory[];
+	related_images: OfferRelatedImages[];
 }
 
+interface OfferRelatedImages {
+	id: number;
+	inner_pic: string;
+	parent_offer: 2;
+}
 export interface Company {
 	id: number;
 	name: string;
@@ -52,4 +58,9 @@ export interface Category2 {
 	id: number;
 	name: string;
 	category_illustration: string;
+}
+
+export interface SectionModel {
+	title: string;
+	data: Offer[];
 }

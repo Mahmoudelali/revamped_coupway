@@ -1,15 +1,20 @@
 import {
-	Image,
 	StyleSheet,
-	Platform,
 	Text,
 	View,
-	ScrollView,
+	SectionList,
+	SectionListRenderItemInfo,
+	SectionListData,
+	FlatList,
 } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { resetToken, setIsLoggedIn } from '../slices/commons-slice';
-import { localStorageAction } from '../helpers/helperFuncs';
+import {
+	resetToken,
+	setIsLoading,
+	setIsLoggedIn,
+} from '../slices/commons-slice';
+import { localStorageAction, LogJSON } from '../helpers/helperFuncs';
 import {
 	FontWeights,
 	LocalStorageAction,
@@ -17,14 +22,22 @@ import {
 } from '../helpers/constants';
 
 import { router } from 'expo-router';
+import { getAllOffers } from '../slices/search-slice';
+import SafeView from '@/components/safeView';
+import { Offer, SectionModel } from '../slices/Models';
 import ImageWithLayer from '@/components/imageWithLayer';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
 	const dispatch = useAppDispatch();
 	let mounted = useRef(false);
 
+	let state = useAppSelector((state) => state.search);
+	let isLoading = commons.isLoading;
+
+	interface SectionHeaderInfo {
+		section: SectionListData<Offer, SectionModel>;
+	}
 	useEffect(() => {
 		if (!commons.token) return;
 		localStorageAction(LocalStorageAction.SET, 'token', commons.token);
@@ -46,32 +59,79 @@ export default function HomeScreen() {
 		});
 	}, [commons.isLoggedIn]);
 
+	useEffect(() => {
+		dispatch(setIsLoading(true));
+		dispatch(getAllOffers());
+		dispatch(setIsLoading(false));
+	}, []);
+
 	const handleClick = async () => {
 		localStorageAction(LocalStorageAction.REMOVE, 'token').then((res) => {
 			if (res == 'done') dispatch(resetToken());
 		});
 	};
 
-	return (
-		<ImageWithLayer
-			image="https://t3.ftcdn.net/jpg/02/43/87/74/360_F_243877435_Jst4Q167p0PXboARcGNq5KXCmSelazFj.jpg"
-			containerStyles={styles.bannerContainer}
-		>
-			<View style={styles.layerText}>
-				<View style={styles.subtitleContainer}>
-					<Ionicons
-						style={styles.location}
-						name="location"
-						size={24}
-					/>
-					<Text style={styles.location}> San Francisco, CA</Text>
-				</View>
+	const renderEmptyView = () => {
+		return <View></View>;
+	};
+	const handleRenderSectionFromMap = () => {
+		let sections = [];
+		for (const [key, value] of Object.entries(state.categoriesMap)) {
+			sections.push({
+				title: key,
+				data: value,
+			});
+		}
+		LogJSON(sections);
+		return sections;
+	};
 
-				<Text style={styles.highlight}>
-					Good afternoon. Take a break from work.
-				</Text>
+	const handleRenderSectionHeader = ({ section }: SectionHeaderInfo) => {
+		let capitalizedTitle =
+			section.title[0].toUpperCase() +
+			section.title.substring(1, section.title.length);
+		return (
+			<View>
+				<Text style={styles.sectionHeader}>{capitalizedTitle}</Text>
 			</View>
-		</ImageWithLayer>
+		);
+	};
+
+	const handleRenderSectionItem = ({
+		section,
+		index,
+	}: SectionListRenderItemInfo<Offer, SectionModel>) => {
+		if (index == 0) {
+			return (
+				<FlatList
+					horizontal
+					data={section.data}
+					renderItem={({ item }) => {
+						return (
+							<ImageWithLayer
+								image={item.main_picture}
+								containerStyles={styles.imageLayerContainer}
+							>
+								<Text style={styles.imageLayerText}>
+									{item.fine_print}
+								</Text>
+							</ImageWithLayer>
+						);
+					}}
+				/>
+			);
+		} else return renderEmptyView();
+	};
+	return (
+		<SafeView>
+			<SectionList
+				sections={handleRenderSectionFromMap()}
+				renderSectionHeader={handleRenderSectionHeader}
+				renderItem={handleRenderSectionItem}
+				progressViewOffset={100}
+				stickySectionHeadersEnabled={false}
+			/>
+		</SafeView>
 	);
 }
 
@@ -109,16 +169,34 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
+	separator: {
+		backgroundColor: 'red',
+		height: 1,
+		flex: 1,
+		flexDirection: 'row',
+	},
+	sectionHeader: {
+		fontWeight: FontWeights.Bold,
+		color: MainColors.textColor,
+		fontSize: 22,
+		lineHeight: 28,
+		marginLeft: 10,
+	},
+	imageLayerContainer: {
+		width: 240,
+		height: 120,
+		borderRadius: 6,
+		overflow: 'hidden',
+		marginHorizontal: 12,
+		marginVertical: 32,
+	},
+	imageLayerText: {
+		textAlign: 'center',
+		fontSize: 17,
+		letterSpacing: 1,
+		maxWidth: '70%',
+		color: MainColors.white,
+		fontWeight: FontWeights.Bold,
+		margin: 'auto',
+	},
 });
-
-{
-	/* <ParallaxScrollView
-			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-			headerImage={
-				<Image
-					source={require('@/assets/images/partial-react-logo.png')}
-					style={styles.reactLogo}
-				/>
-			}
-		></ParallaxScrollView> */
-}

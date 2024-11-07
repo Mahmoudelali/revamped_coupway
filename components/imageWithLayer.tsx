@@ -4,9 +4,9 @@ import React, { ReactNode } from 'react';
 import { Image, StyleSheet, View, ViewStyle } from 'react-native';
 
 interface ImageWithLayerProps {
-	children: ReactNode;
 	containerStyles?: ViewStyle;
 	image: string;
+	children: ReactNode;
 }
 const ImageWithLayer: React.FC<ImageWithLayerProps> = (props) => {
 	return (
@@ -24,14 +24,15 @@ const styles = StyleSheet.create({
 	bannerContainer: {
 		height: 270,
 		top: -10,
+		position: 'relative',
 	},
 	bannerImage: {
-		objectFit: 'contain',
+		objectFit: 'cover',
 		maxWidth: '100%',
 		height: '100%',
 	},
 	bannerLayer: {
-		backgroundColor: MainColors.colorWithOpacity(MainColors.black, 20),
+		backgroundColor: MainColors.colorWithOpacity(MainColors.black, 35),
 		position: 'absolute',
 		top: 0,
 		left: 0,
