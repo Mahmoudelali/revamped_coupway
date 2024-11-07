@@ -14,6 +14,8 @@ import {
 	SectionListRenderItemInfo,
 	SectionListData,
 	FlatList,
+	ListRenderItem,
+	ListRenderItemInfo,
 } from 'react-native';
 
 import {
@@ -98,6 +100,17 @@ export default function HomeScreen() {
 		);
 	};
 
+	const handleRenderFlatItem = ({ item }: ListRenderItemInfo<Offer>) => {
+		return (
+			<ImageWithLayer
+				image={item.main_picture}
+				containerStyles={styles.imageLayerContainer}
+			>
+				<Text style={styles.imageLayerText}>{item.fine_print}</Text>
+			</ImageWithLayer>
+		);
+	};
+
 	const handleRenderSectionItem = ({
 		section,
 		index,
@@ -107,18 +120,7 @@ export default function HomeScreen() {
 				<FlatList
 					horizontal
 					data={section.data}
-					renderItem={({ item }) => {
-						return (
-							<ImageWithLayer
-								image={item.main_picture}
-								containerStyles={styles.imageLayerContainer}
-							>
-								<Text style={styles.imageLayerText}>
-									{item.fine_print}
-								</Text>
-							</ImageWithLayer>
-						);
-					}}
+					renderItem={handleRenderFlatItem}
 				/>
 			);
 		} else return renderEmptyView();
