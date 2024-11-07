@@ -1,3 +1,11 @@
+import { router } from 'expo-router';
+import { getAllOffers } from '../slices/search-slice';
+import SafeView from '@/components/safeView';
+import { Offer, SectionModel } from '../slices/Models';
+import ImageWithLayer from '@/components/imageWithLayer';
+import { useEffect, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { localStorageAction, LogJSON } from '../helpers/helperFuncs';
 import {
 	StyleSheet,
 	Text,
@@ -7,25 +15,18 @@ import {
 	SectionListData,
 	FlatList,
 } from 'react-native';
-import { useEffect, useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks';
+
 import {
 	resetToken,
 	setIsLoading,
 	setIsLoggedIn,
 } from '../slices/commons-slice';
-import { localStorageAction, LogJSON } from '../helpers/helperFuncs';
+
 import {
 	FontWeights,
 	LocalStorageAction,
 	MainColors,
 } from '../helpers/constants';
-
-import { router } from 'expo-router';
-import { getAllOffers } from '../slices/search-slice';
-import SafeView from '@/components/safeView';
-import { Offer, SectionModel } from '../slices/Models';
-import ImageWithLayer from '@/components/imageWithLayer';
 
 export default function HomeScreen() {
 	const commons = useAppSelector((state) => state.commons);
