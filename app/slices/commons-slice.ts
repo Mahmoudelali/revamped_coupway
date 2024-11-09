@@ -1,10 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiUrls } from '../config';
 import { NetworkManager } from '../managers/NetworkManager';
-import store from '../store';
-import localize from '@/components/Langs/Langs';
-import { LocalStorageAction, StatusCodes } from '../helpers/constants';
-import { localStorageAction } from '../helpers/helperFuncs';
+import { StatusCodes } from '../helpers/constants';
 
 enum Langs {
 	en = 'en',
